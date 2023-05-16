@@ -5,65 +5,46 @@
 #+author: Deden Bangkit
 
 #+PROPERTY: header-args:sh    :exports both
-#+PROPERTY: header-args:sh+   :results drawer
+#+PROPERTY: header-args:sh+   :results raw replace
 
 * JQ
-#+name: Okezone
+
+** Transform Value
+#+name: Transform Value
 #+begin_src sh
-curl -s http://localhost:3002/okezone/terbaru \
-    | jq -r '.data.posts | .[] | "[[" + .link + "][" + .title + "]]"'
+echo "| Name | City |"
+echo "|-+-|"
+curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
+    | jq -r '.[] | "|" + .id + "|" +  .name + "|"'
 #+end_src
 
-#+RESULTS: Okezone
-:results:
-[[https://bola.okezone.com/read/2023/05/13/51/2813376/hasil-timnas-indonesia-u-22-vs-vietnam-di-semifinal-sea-games-2023-menang-dramatis-3-2-dengan-10-pemain-garuda-muda-lolos-ke-final][Hasil Timnas Indonesia U-22 vs Vietnam di Semifinal SEA Games 2023: Menang Dramatis 3-2 dengan 10 Pemain, Garuda Muda Lolos ke Final!]]
-[[https://news.okezone.com/read/2023/05/13/525/2813375/daftar-caleg-ke-kpu-dpd-perindo-cianjur-optimis-raih-12-kursi-dprd][Daftar Caleg ke KPU, DPD Perindo Cianjur Optimis Raih 12 Kursi DPRD]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813374/perindo-dki-jakarta-targetkan-15-kursi-di-dprd][Perindo DKI Jakarta Targetkan 15 Kursi di DPRD]]
-[[https://nasional.okezone.com/read/2023/05/13/337/2813373/bebaskan-4-pekerja-bts-yang-disandera-kkb-polri-tetap-junjung-ham][Bebaskan 4 Pekerja BTS yang Disandera KKB, Polri Tetap Junjung HAM]]
-[[https://news.okezone.com/read/2023/05/13/512/2813372/atasi-stunting-dan-gizi-buruk-ganjar-kembangkan-pilot-project-beras-fortifikasi][Atasi Stunting dan Gizi Buruk, Ganjar Kembangkan Pilot Project Beras Fortifikasi]]
-[[https://techno.okezone.com/read/2023/05/13/326/2813370/kumpulkan-skor-sebanyak-banyaknya-di-games-pin-ball][Kumpulkan Skor Sebanyak-Banyaknya di Games Pin Ball!]]
-[[https://news.okezone.com/read/2023/05/13/525/2813369/daftar-bacaleg-perindo-jabar-incar-suara-milenilal-di-pemilu-2024][Daftar Bacaleg, Perindo Jabar Incar Suara Milenilal di Pemilu 2024]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813367/dpw-partai-perindo-dki-daftarkan-106-caleg-ke-kpu][DPW Partai Perindo DKI Daftarkan 106 Caleg ke KPU]]
-[[https://lifestyle.okezone.com/read/2023/05/13/612/2813366/keseruan-fashion-show-aladinmall-di-sarinah-jangan-lupa-datang-ke-event-berikutnya][Keseruan Fashion Show AladinMall di Sarinah, Jangan Lupa Datang ke Event Berikutnya!]]
-[[https://news.okezone.com/read/2023/05/13/18/2813365/67-juta-airbag-cacat-perusahaan-mobil-as-tolak-tarik-kantong-udara][67 Juta Airbag Cacat, Perusahaan Mobil AS Tolak Tarik Kantong Udara]]
-[[https://bola.okezone.com/read/2023/05/13/51/2813364/hasil-sepakbola-sea-games-2023-marselino-ferdinan-cetak-gol-timnas-indonesia-u-22-unggul-lagi-atas-vietnam-2-1][Hasil Sepakbola SEA Games 2023: Marselino Ferdinan Cetak Gol, Timnas Indonesia U-22 Unggul Lagi atas Vietnam 2-1!]]
-[[https://economy.okezone.com/read/2023/05/13/278/2813357/ihsg-lesu-sejak-awal-mei-berikut-sentimen-negatifnya][IHSG Lesu Sejak Awal Mei, Berikut Sentimen Negatifnya]]
-[[https://news.okezone.com/read/2023/05/13/340/2813363/pendaftaran-caleg-ke-kpu-partai-perindo-bengkulu-siap-menangkan-pemilu-2024][Pendaftaran Caleg ke KPU, Partai Perindo Bengkulu Siap Menangkan Pemilu 2024]]
-[[https://news.okezone.com/read/2023/05/13/525/2813361/perindo-jabar-daftarkan-120-bacaleg-ke-kpu-pasang-target-15-kursi-dprd][Perindo Jabar Daftarkan 120 Bacaleg ke KPU, Pasang Target 15 Kursi DPRD]]
-[[https://economy.okezone.com/read/2023/05/12/320/2812705/beli-bbm-subsidi-sudah-dibatasi-buruan-daftarkan-kendaraan-di-sini][Beli BBM Subsidi Sudah Dibatasi, Buruan Daftarkan Kendaraan di Sini!]]
-[[https://celebrity.okezone.com/read/2023/05/13/33/2813352/sheila-on-7-jadi-guest-star-di-resepsi-nikahan-jessica-mila-dan-yakup-hasibuan][Sheila On 7 Jadi Guest Star di Resepsi Nikahan Jessica Mila dan Yakup Hasibuan]]
-[[https://sports.okezone.com/read/2023/05/13/43/2813358/klasemen-sementara-perolehan-medali-sea-games-2023-hingga-sabtu-13-mei-2023-pukul-17-00-wib-indonesia-masih-tertahan-di-posisi-4-vietnam-kukuh-di-puncak][Klasemen Sementara Perolehan Medali SEA Games 2023 hingga Sabtu 13 Mei 2023 Pukul 17.00 WIB: Indonesia Masih Tertahan di Posisi 4, Vietnam Kukuh di Puncak!]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813355/belajar-dari-pemilu-2019-dpd-partai-perindo-targetkan-satu-fraksi-di-dprd-depok][Belajar dari Pemilu 2019, DPD Partai Perindo Targetkan Satu Fraksi di DPRD Depok]]
-[[https://nasional.okezone.com/read/2023/05/13/337/2813354/pelantikan-dpp-ikatan-pemuda-tionghoa-indonesia-bertekad-kuat-sambut-indonesia-emas-2045][Pelantikan DPP Ikatan Pemuda Tionghoa Indonesia, Bertekad Kuat Sambut Indonesia Emas 2045]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813353/viral-pria-ogdj-di-bekasi-pukul-bocah-hingga-tersungkur][Viral, Pria OGDJ di Bekasi Pukul Bocah hingga Tersungkur]]
-[[https://news.okezone.com/read/2023/05/13/340/2813349/dpw-partai-perindo-bengkulu-daftarkan-caleg-ke-kpu][DPW Partai Perindo Bengkulu Daftarkan Caleg ke KPU]]
-[[https://news.okezone.com/read/2023/05/13/512/2813348/pemalang-gempar-seorang-pria-ditemukan-gantung-diri-di-bawah-pohon-area-persawahan][Pemalang Gempar, Seorang Pria Ditemukan Gantung Diri di Bawah Pohon Area Persawahan]]
-[[https://bola.okezone.com/read/2023/05/13/51/2813347/hasil-liga-futsal-profesional-2022-2023-sengit-bintang-timur-surabaya-ditahan-imbang-kancil-whw-pontianak-4-4][Hasil Liga Futsal Profesional 2022-2023: Sengit, Bintang Timur Surabaya Ditahan Imbang Kancil WHW Pontianak 4-4!]]
-[[https://economy.okezone.com/read/2023/05/13/320/2813305/pengumuman-mulai-1-juni-jadwal-keberangkatan-kereta-berubah-dan-semakin-cepat][Pengumuman! Mulai 1 Juni Jadwal Keberangkatan Kereta Berubah dan Semakin Cepat]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813345/jelang-pemilu-2024-50-caleg-partai-perindo-resmi-daftar-ke-kpu-depok][Jelang Pemilu 2024, 50 Caleg Partai Perindo Resmi Daftar ke KPU Depok]]
-[[https://nasional.okezone.com/read/2023/05/13/337/2813344/ahmad-rofiq-lepas-rombongan-dpw-partai-perindo-dki-daftar-caleg-ke-kpu][Ahmad Rofiq Lepas Rombongan DPW Partai Perindo DKI Daftar Caleg ke KPU]]
-[[https://economy.okezone.com/read/2023/05/13/622/2813229/tips-karier-dari-coldplay-yang-bakal-konser-di-gbk-jakarta][Tips Karier dari Coldplay yang Bakal Konser di GBK Jakarta]]
-[[https://bola.okezone.com/read/2023/05/13/51/2813342/hasil-sepakbola-sea-games-2023-sundulan-komang-teguh-bawa-timnas-indonesia-u-22-unggul-1-0-atas-vietnam][Hasil Sepakbola SEA Games 2023: Sundulan Komang Teguh Bawa Timnas Indonesia U-22 Unggul 1-0 atas Vietnam!]]
-[[https://news.okezone.com/read/2023/05/13/340/2813341/diduga-mabuk-seorang-pria-di-bandar-lampung-tewas-tertabrak-kereta][Diduga Mabuk, Seorang Pria di Bandar Lampung Tewas Tertabrak Kereta]]
-[[https://nasional.okezone.com/read/2023/05/13/337/2813340/atasi-over-kapasitas-di-lapas-wamenkumham-kuhp-tak-mengedepankan-pidana-penjara][Atasi Over Kapasitas di Lapas, Wamenkumham : KUHP Tak Mengedepankan Pidana Penjara]]
-[[https://news.okezone.com/read/2023/05/13/18/2813339/lolos-dari-percobaan-pembunuhan-aktivis-laos-tinggalkan-negaranya-untuk-perawatan-medis][Lolos dari Percobaan Pembunuhan, Aktivis Laos Tinggalkan Negaranya untuk Perawatan Medis]]
-[[https://travel.okezone.com/read/2023/05/10/406/2811710/mengapa-raja-ampat-dijuluki-sebagai-surga-bawah-laut-dunia][Mengapa Raja Ampat Dijuluki sebagai Surga Bawah Laut Dunia?]]
-[[https://celebrity.okezone.com/read/2023/05/13/33/2813336/tak-cuma-mesra-luna-maya-sering-kirim-emoji-hati-untuk-maxime-bouttier][Tak Cuma Mesra, Luna Maya Sering Kirim Emoji Hati untuk Maxime Bouttier]]
-[[https://sports.okezone.com/read/2023/05/13/38/2813338/hasil-latihan-bebas-motogp-prancis-2023-marc-marquez-gagal-tembus-3-besar-maverick-vinales-paling-cepat][Hasil Latihan Bebas MotoGP Prancis 2023: Marc Marquez Gagal Tembus 3 Besar, Maverick Vinales Paling Cepat!]]
-[[https://bola.okezone.com/read/2023/05/13/51/2813335/erick-thohir-beri-suntikan-motivasi-langsung-kepada-timnas-indonesia-u-22-jelang-lawan-vietnam-u-22-di-semifinal-sea-games-2023][Erick Thohir Beri Suntikan Motivasi Langsung kepada Timnas Indonesia U-22, Jelang Lawan Vietnam U-22 di Semifinal SEA Games 2023]]
-[[https://bola.okezone.com/read/2023/05/13/51/2813333/timnas-indonesia-u-22-vs-vietnam-di-semifinal-sea-games-2023-sempurna-di-fase-grup-ketum-dpp-pemuda-perindo-yakin-garuda-muda-raih-kemenangan][Timnas Indonesia U-22 vs Vietnam di Semifinal SEA Games 2023: Sempurna di Fase Grup, Ketum DPP Pemuda Perindo Yakin Garuda Muda Raih Kemenangan]]
-[[https://news.okezone.com/read/2023/05/13/18/2813332/ukraina-klaim-kemajuan-besar-di-bakhmut-rusia-bantah-keras][Ukraina Klaim Kemajuan Besar di Bakhmut, Rusia Bantah Keras]]
-[[https://economy.okezone.com/read/2023/05/13/320/2813303/aptri-usul-harga-pembelian-gula-di-tingkat-petani-rp15-000-kg][APTRI Usul Harga Pembelian Gula di Tingkat Petani Rp15.000/Kg]]
-[[https://nasional.okezone.com/read/2023/05/13/337/2813330/diiringi-rombongan-vespa-cak-imin-daftarkan-580-bacaleg-pkb-ke-kpu-ri][Diiringi Rombongan Vespa, Cak Imin Daftarkan 580 Bacaleg PKB ke KPU RI]]
-[[https://news.okezone.com/read/2023/05/13/340/2813327/potensi-pengembangan-ekonomi-syariah-di-maluku-utara-cukup-luas][Potensi Pengembangan Ekonomi Syariah di Maluku Utara Cukup Luas]]
-[[https://nasional.okezone.com/read/2023/05/13/337/2813328/reog-ponorogo-ikut-kawal-pendaftaran-bacaleg-partai-gerindra-ke-kpu][Reog Ponorogo Ikut Kawal Pendaftaran Bacaleg Partai Gerindra ke KPU]]
-[[https://economy.okezone.com/read/2023/05/13/622/2813231/5-jurus-ampuh-hindari-penipuan-lowongan-pekerjaan][5 Jurus Ampuh Hindari Penipuan Lowongan Pekerjaan]]
-[[https://celebrity.okezone.com/read/2023/05/13/33/2813281/gara-gara-ini-ibunda-virgoun-kesal-dengan-inara-rusli][Gara-Gara Ini, Ibunda Virgoun Kesal dengan Inara Rusli]]
-[[https://news.okezone.com/read/2023/05/13/512/2813324/daftar-ke-kpu-bacaleg-partai-perindo-solo-naik-odong-odong][Daftar ke KPU, Bacaleg Partai Perindo Solo Naik Odong-Odong]]
-[[https://lifestyle.okezone.com/read/2023/05/13/298/2813286/resep-seblak-rafael-smash-yang-viral-di-tiktok-beda-dari-biasanya][Resep Seblak Rafael SMASH yang Viral di TikTok, Beda dari Biasanya!]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813320/viral-antrean-panjang-gugatan-cerai-di-pengadilan-agama-cibinong-ini-faktanya][Viral Antrean Panjang Gugatan Cerai di Pengadilan Agama Cibinong, Ini Faktanya]]
-[[https://sports.okezone.com/read/2023/05/13/43/2813319/hasil-biliar-sea-games-2023-dhendy-khristanto-terhenti-di-16-besar-usai-kalah-dari-wakil-laos][Hasil Biliar SEA Games 2023: Dhendy Khristanto Terhenti di 16 Besar, Usai Kalah dari Wakil Laos]]
-[[https://nasional.okezone.com/read/2023/05/13/337/2813318/pbb-gabung-ke-koalisi-kebangkitan-indonesia-raya-bersama-gerindra-dan-pkb][PBB Gabung ke Koalisi Kebangkitan Indonesia Raya Bersama Gerindra dan PKB]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813317/polisi-olah-tkp-pencurian-geser-tas-di-restoran-jeruk-purut][Polisi Olah TKP Pencurian Geser Tas di Restoran Jeruk Purut]]
-[[https://megapolitan.okezone.com/read/2023/05/13/338/2813316/daftar-ke-kpu-depok-puluhan-bacaleg-partai-perindo-konvoi-dari-kantor-dpd][Daftar ke KPU Depok, Puluhan Bacaleg Partai Perindo Konvoi dari Kantor DPD]]
-:end:
+#+RESULTS: Transform Value
+| Name | City                    |
+|------+-------------------------|
+| 3201 | KABUPATEN BOGOR         |
+| 3202 | KABUPATEN SUKABUMI      |
+| 3203 | KABUPATEN CIANJUR       |
+| 3204 | KABUPATEN BANDUNG       |
+| 3205 | KABUPATEN GARUT         |
+| 3206 | KABUPATEN TASIKMALAYA   |
+| 3207 | KABUPATEN CIAMIS        |
+| 3208 | KABUPATEN KUNINGAN      |
+| 3209 | KABUPATEN CIREBON       |
+| 3210 | KABUPATEN MAJALENGKA    |
+| 3211 | KABUPATEN SUMEDANG      |
+| 3212 | KABUPATEN INDRAMAYU     |
+| 3213 | KABUPATEN SUBANG        |
+| 3214 | KABUPATEN PURWAKARTA    |
+| 3215 | KABUPATEN KARAWANG      |
+| 3216 | KABUPATEN BEKASI        |
+| 3217 | KABUPATEN BANDUNG BARAT |
+| 3218 | KABUPATEN PANGANDARAN   |
+| 3271 | KOTA BOGOR              |
+| 3272 | KOTA SUKABUMI           |
+| 3273 | KOTA BANDUNG            |
+| 3274 | KOTA CIREBON            |
+| 3275 | KOTA BEKASI             |
+| 3276 | KOTA DEPOK              |
+| 3277 | KOTA CIMAHI             |
+| 3278 | KOTA TASIKMALAYA        |
+| 3279 | KOTA BANJAR             |

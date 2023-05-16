@@ -12,5 +12,6 @@ ls . | grep 'mode' | cut -d '-' -f 2 | sed 's/mode_\(.*\)\.org/- \1/'
 - sql
 - node_js
 - python
+- clojure
 
 Join org-code-crafters to explore a diverse collection of code block examples, learn valuable programming tips and tricks, and advance your coding skills across multiple languages. Contribute your expertise, share insights, and be part of a vibrant community dedicated to continuous learning and improvement with org-code-crafters!

@@ -5,9 +5,31 @@
 #+author: Deden Bangkit
 
 #+PROPERTY: header-args:sh    :exports both
-#+PROPERTY: header-args:sh+   :results raw replace
+#+PROPERTY: header-args:sh+   :results raw
 
 * JQ
+
+jq is a lightweight and flexible command-line tool for parsing, manipulating, and querying JSON data. It is designed specifically for working with JSON, making it easy to extract specific values, filter data based on conditions, transform data structures, and perform complex operations on JSON documents.
+
+** Map and Limit Value
+
+#+name: Map and Limit Value
+#+begin_src sh
+curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
+    | jq 'map({district_id: .id, district_name: .name}) | .[:2]'
+#+end_src
+
+#+RESULTS: Map and Limit Value
+[
+  {
+    "district_id": "3201",
+    "district_name": "KABUPATEN BOGOR"
+  },
+  {
+    "district_id": "3202",
+    "district_name": "KABUPATEN SUKABUMI"
+  }
+]
 
 ** Transform Value
 #+name: Transform Value
@@ -48,3 +70,82 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 | 3277 | KOTA CIMAHI             |
 | 3278 | KOTA TASIKMALAYA        |
 | 3279 | KOTA BANJAR             |
+
+** List Specific Key Values
+
+#+name: List Specific Key Value
+#+begin_src sh :results drawer
+curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
+    | jq -r '.[:2] | .[].name'
+#+end_src
+
+#+RESULTS: List Specific Key Value
+:results:
+KABUPATEN BOGOR
+KABUPATEN SUKABUMI
+:end:
+
+** Filter by Value
+
+#+name: Filter by Value
+#+begin_src sh :results drawer
+curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
+    | jq -r 'map(select(.id > "3277")) | .[].name'
+#+end_src
+
+#+RESULTS: Filter by Value
+:results:
+KOTA TASIKMALAYA
+KOTA BANJAR
+:end:
+
+
+* Pup
+
+pup is a command line tool for processing HTML. It reads from stdin, prints to stdout, and allows the user to filter parts of the page using CSS selectors.
+
+Read more: [[https://github.com/ericchiang/pup]]
+
+** Filter By HTML Tag and ClassName
+
+#+name: Filter by HTML Tag
+#+begin_src sh :results drawer
+curl -s https://news.ycombinator.com/ \
+    | pup 'span.titleline .sitestr' \
+    | head -n 6
+#+end_src
+
+#+RESULTS: Filter by HTML Tag
+:results:
+<span class="sitestr">
+ bloomberg.com
+</span>
+<span class="sitestr">
+ ableton.com
+</span>
+:end:
+
+** HTML To JSON
+
+#+name: HTML To JSON
+#+begin_src sh :results drawer
+curl -s https://news.ycombinator.com/ \
+    | pup 'span.titleline .sitestr json{}' \
+    | jq -r ".[:2]"
+#+end_src
+
+#+RESULTS: HTML To JSON
+:results:
+[
+  {
+    "class": "sitestr",
+    "tag": "span",
+    "text": "bloomberg.com"
+  },
+  {
+    "class": "sitestr",
+    "tag": "span",
+    "text": "ableton.com"
+  }
+]
+:end:

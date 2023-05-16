@@ -5,6 +5,17 @@
 #+PROPERTY: header-args:clojure+ :exports both
 #+PROPERTY: header-args:clojure+ :results output
 
+* Intro
+
+In Clojure, data is treated as immutable, and functions are designed to operate on immutable data structures. This approach has several benefits:
+
+1. Immutable data structures: Clojure provides a rich set of immutable data structures such as vectors, lists, maps, and sets. Immutable data structures offer various advantages, including simpler reasoning about state, thread safety, and efficient sharing of common substructures.
+2. Data transformation: Clojure emphasizes data transformation rather than mutable state manipulation. Instead of modifying existing data structures, functions create new data structures with the desired modifications. This functional programming approach promotes code clarity, readability, and composability.
+3. Pure functions: Clojure encourages the use of pure functions that do not have side effects and always produce the same output for the same input. Pure functions make code easier to test, reason about, and parallelize. They also enable referential transparency, where a function call can be replaced by its result without affecting the program's behavior.
+4. Transactional memory: Clojure provides a software transactional memory system called ref and atom for managing shared state. It allows coordination of multiple concurrent operations on shared data by ensuring atomicity, consistency, isolation, and durability (ACID) properties.
+5. Data-driven development: Clojure promotes a data-driven development style, where the shape and flow of data drive the design of programs. Data is often represented using maps, vectors, or other data structures. Functions are then used to process and transform this data, resulting in expressive and concise code.
+
+By embracing immutability and data-driven development, Clojure encourages a style of programming that is robust, composable, and highly adaptable. It leads to code that is easier to reason about, test, and maintain, while also enabling efficient concurrency and parallelism.
 
 * Basic Mapping
 
@@ -67,6 +78,25 @@ Using destructuring, we can extract and bind specific values from the person map
 
 Inside the let block, we can directly use the extracted values as variables. In this case, we print out the person's name, age, and city using println and string interpolation.
 
+
+*Destructuring in Function Arguments*
+
+Clojure also allows powerful destructuring of data structures directly in function arguments. This simplifies code and enables concise pattern matching. Here's an example:
+
+#+begin_src clojure
+(defn get-full-name [{:keys [first-name last-name]}]
+  (str first-name " " last-name))
+
+(def person {:first-name "John" :last-name "Doe"})
+
+(println (get-full-name person))
+#+end_src
+
+#+RESULTS:
+: John Doe
+
+In this example, the get-full-name function takes a map argument and destructures the first-name and last-name keys using pattern matching. This allows for convenient access to the values within the function body.
+
 * Threading
 
 #+begin_src clojure
@@ -90,6 +120,25 @@ In this example, we have a vector of numbers called numbers. We use the threadin
 - Finally, we use println to print the result.
 
 The threading macros ->> thread the result of each expression as the last argument of the next expression. This allows for a more readable and sequential way of composing functions and transforming data.
+
+* Parallel Processing
+
+Clojure provides the pmap function, which allows for easy parallel processing of data. It applies a function to each element of a collection in parallel, distributing the work across multiple cores.
+
+#+begin_src clojure
+(defn square [x]
+  (* x x))
+
+(def numbers (range 1 101))
+
+(def squared-numbers (pmap square numbers))
+(println squared-numbers)
+#+end_src
+
+#+RESULTS:
+: (1 4 9 16 25 36 49 64 81 100 121 144 169 196 225 256 289 324 361 400 441 484 529 576 625 676 729 784 841 900 961 1024 1089 1156 1225 1296 1369 1444 1521 1600 1681 1764 1849 1936 2025 2116 2209 2304 2401 2500 2601 2704 2809 2916 3025 3136 3249 3364 3481 3600 3721 3844 3969 4096 4225 4356 4489 4624 4761 4900 5041 5184 5329 5476 5625 5776 5929 6084 6241 6400 6561 6724 6889 7056 7225 7396 7569 7744 7921 8100 8281 8464 8649 8836 9025 9216 9409 9604 9801 10000)
+
+In this example, pmap applies the square function to each number in the numbers range collection, utilizing parallel processing. This can significantly speed up computation when working with large datasets.
 
 * Annonimous Function
 

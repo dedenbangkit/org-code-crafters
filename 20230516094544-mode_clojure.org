@@ -1,0 +1,242 @@
+:PROPERTIES:
+:ID:       5e40df29-f456-4898-b31e-ad0bce2a4aa2
+:END:
+#+title: Mode Clojure
+#+PROPERTY: header-args:clojure+ :exports both
+#+PROPERTY: header-args:clojure+ :results output
+
+
+* Basic Mapping
+
+#+begin_src clojure
+(defn square [x]
+  (* x x))
+
+(def numbers [1 2 3 4 5])
+
+(def squared-numbers (map square numbers))
+(println squared-numbers)
+#+end_src
+
+#+RESULTS:
+: (1 4 9 16 25)
+
+We then use the map function to apply the square function to each element of the numbers vector. The map function takes a function as its first argument (square in this case) and a collection (numbers in this case). It returns a new sequence where the function has been applied to each element of the collection.
+
+Finally, we print the squared-numbers sequence using println. This will output the sequence of squared numbers.
+
+* Recursive Approach
+
+#+begin_src clojure
+(defn factorial [n]
+  (loop [acc 1
+         i n]
+    (if (zero? i)
+      acc
+      (recur (* acc i) (dec i)))))
+
+(println (factorial 5))
+#+end_src
+
+#+RESULTS:
+: 120
+
+The factorial function uses a loop-recur construct for iterative calculation. It takes two parameters: acc (accumulator) and i (counter). The acc variable keeps track of the factorial value, and i represents the current number being multiplied.
+
+Within the loop, the function checks if i is zero. If so, it returns the acc value as the factorial result. Otherwise, it calls recur with the updated acc and i values, multiplying the current acc by i and decrementing i by 1 in each iteration.
+
+* Destructuring
+
+#+begin_src clojure
+(def person {:name "Alice" :age 30 :city "London"})
+
+(let [{name :name age :age city :city} person]
+  (println (str "Name: " name))
+  (println (str "Age: " age))
+  (println (str "City: " city)))
+#+end_src
+
+#+RESULTS:
+: Name: Alice
+: Age: 30
+: City: London
+
+In this example, we have a map called person that represents information about a person. The map contains keys such as :name, :age, and :city, along with their corresponding values.
+
+Using destructuring, we can extract and bind specific values from the person map into local variables within a let block. The destructuring pattern {name :name age :age city :city} specifies which keys to extract and the variables to bind them to.
+
+Inside the let block, we can directly use the extracted values as variables. In this case, we print out the person's name, age, and city using println and string interpolation.
+
+* Threading
+
+#+begin_src clojure
+(def numbers [1 2 3 4 5])
+
+(->> numbers
+     (filter even?)
+     (map #(* % %))
+     (reduce +)
+     (println))
+#+end_src
+
+#+RESULTS:
+: 20
+
+In this example, we have a vector of numbers called numbers. We use the threading macros ->> to thread the data through a series of transformations.
+
+- The filter function is used to filter out only the even numbers from the vector.
+- The map function is used to square each of the filtered numbers.
+- The reduce function with the + operator is used to calculate the sum of all the squared numbers.
+- Finally, we use println to print the result.
+
+The threading macros ->> thread the result of each expression as the last argument of the next expression. This allows for a more readable and sequential way of composing functions and transforming data.
+
+* Annonimous Function
+
+#+begin_src clojure
+(def numbers [1 2 3 4 5])
+
+(let [squared (map #(Math/pow % 2) numbers)
+      sum (reduce + squared)]
+  (println "Squared numbers:" squared)
+  (println "Sum of squared numbers:" sum))
+#+end_src
+
+#+RESULTS:
+: Squared numbers: (1.0 4.0 9.0 16.0 25.0)
+: Sum of squared numbers: 55.0
+
+In this example, we have a vector of numbers called numbers. We use higher-order functions and anonymous functions to perform operations on the numbers.
+
+- The map function takes an anonymous function #(Math/pow % 2) as an argument. This function raises each number to the power of 2 using the Math/pow function.
+- The result of the map operation is bound to the variable squared, which contains a sequence of squared numbers.
+- The reduce function with the + operator is used to calculate the sum of all the squared numbers.
+- Finally, we use println to print the squared numbers and the sum of squared numbers.
+
+Anonymous functions, denoted by the #() syntax, allow you to define functions inline without explicitly naming them. They are useful for short and simple functions.
+
+* Lazy Sequences
+
+#+begin_src clojure
+(defn fibonacci-seq []
+  (letfn [(fib [a b]
+            (lazy-seq (cons a (fib b (+ a b)))))]
+    (fib 0 1)))
+
+(->> (take 10 (fibonacci-seq))
+     (println))
+#+end_src
+
+#+RESULTS:
+: (0 1 1 2 3 5 8 13 21 34)
+
+In this example, we define a function called fibonacci-seq that generates an infinite sequence of Fibonacci numbers. The Fibonacci sequence starts with 0 and 1, and each subsequent number is the sum of the previous two numbers.
+
+- Inside the fibonacci-seq function, we define an inner function fib that takes two parameters a and b.
+- Using lazy-seq, we create a lazy sequence where each element is the value of a, followed by a recursive call to fib with b as the new a value and the sum of a and b as the new b value.
+- The recursive call is wrapped in cons to prepend a to the lazy sequence.
+- By using lazy evaluation, only the elements that are accessed or requested are computed, allowing us to work with potentially infinite sequences without the need to compute the entire sequence.
+
+In the last line of the code, we use the take function to retrieve the first 10 elements from the Fibonacci sequence generated by fibonacci-seq.
+
+* Transducers
+
+#+begin_src clojure
+(def numbers [1 2 3 4 5])
+
+(defn is-even? [n]
+  (zero? (mod n 2)))
+
+(defn square [n]
+  (* n n))
+
+(def squared-even-sum
+  (->> numbers
+       (filter is-even?)
+       (map square)
+       (reduce +)))
+
+(println "Sum of squared even numbers:" squared-even-sum)
+#+end_src
+
+#+RESULTS:
+: Sum of squared even numbers: 20
+
+In this example, we have a vector of numbers called numbers. We utilize transducers to perform a series of transformations on the numbers efficiently.
+
+- We define a predicate function is-even? that checks if a number is even by using the modulo operation.
+- We define a transformation function square that squares a given number.
+- The squared-even-sum variable uses a threading macro and transducers to:
+- Filter out even numbers using the filter transducer with the is-even? predicate.
+- Map the square transformation over the filtered numbers using the map transducer.
+- Reduce the resulting sequence of squared even numbers using the + operator.
+- Finally, we print the sum of the squared even numbers.
+
+Transducers are effective and efficient in Clojure due to several reasons:
+
+1. Single-pass processing: Transducers process elements of a sequence in a single pass. Instead of creating intermediate collections at each transformation step, transducers compose operations into a single traversal. This eliminates the need for intermediate collections, resulting in reduced memory usage and improved performance.
+2. Reusability and composability: Transducers are reusable transformations that can be composed and combined to create complex data processing pipelines. They provide a higher level of abstraction, allowing you to separate the transformation logic from the specifics of the collection being processed. This enables code reuse and promotes clean and modular code.
+3. Lazy evaluation: Transducers work well with lazy sequences and allow for on-demand evaluation of elements. They only compute values when required by subsequent operations or when a terminal operation like reduce or into is encountered. This lazy evaluation further improves performance by avoiding unnecessary computations.
+4. Independence from collection types: Transducers operate independently of the underlying collection type. They can be used with various collections such as vectors, lists, sets, or custom collection types, making them highly versatile. This decoupling allows you to write transformations once and apply them to different types of collections.
+5. Efficient fusion: Clojure's transducer implementation uses fusion techniques to optimize the composition of multiple transducers. Fusion eliminates intermediate steps and combines operations into a single step, reducing overhead and improving efficiency. This fusion process ensures that the transducers' composition is as performant as handcrafted collection-specific code.
+
+* Concept of Macros
+
+Macros allow you to generate code dynamically and perform powerful transformations at compile-time. They can be used to create domain-specific languages (DSLs), introduce syntactic sugar, and abstract away repetitive or boilerplate code. Macros give Clojure its expressive power and enable you to extend the language to fit specific needs.
+
+#+begin_src clojure
+(defmacro repeat-n-times [n & body]
+  (vec (concat (repeat n `(do ~@body)))))
+
+(def repetitions (repeat-n-times 3 (println "Hello, Clojure!")))
+(doseq [rep repetitions]
+  (eval rep))
+#+end_src
+
+#+RESULTS:
+: Hello, Clojure!
+: Hello, Clojure!
+: Hello, Clojure!
+
+- In this example, we define a macro called repeat-n-times that takes a number n and a body of expressions. The macro expands into a vector containing n copies of the body expressions wrapped in do forms.
+- We then use the repeat-n-times macro to generate a vector called repetitions that contains three copies of the println expression.
+- Finally, we use doseq to iterate over the repetitions vector and evaluate each expression using eval.
+
+* Multimethods
+
+#+begin_src clojure
+(defmulti greet :language)
+
+(defmethod greet :english [person]
+  (str "Hello, " (:name person) "!"))
+
+(defmethod greet :spanish [person]
+  (str "¡Hola, " (:name person) "!"))
+
+(defmethod greet :bahasa [person]
+  (str "Halo, " (:name person) "!"))
+
+(def person1 {:name "Alice" :language :english})
+(def person2 {:name "Deden" :language :bahasa})
+(println (greet person1))
+(println (greet person2))
+#+end_src
+
+#+RESULTS:
+| Hello, Alice! |
+| Halo, Deden!  |
+
+In this example, we define a multimethod called greet that dispatches based on the :language keyword of the person map.
+
+- We define different methods for the greet multimethod based on the language. For example, we have methods for English, Spanish, and French greetings. Each method takes a person map as an argument and returns a greeting string specific to the language.
+- The defmulti macro defines the multimethod with the :language keyword as the dispatch function.
+- We then define methods for different languages using the defmethod macro. Each method is associated with a specific language keyword and implements the corresponding greeting.
+- Finally, we create a person map with a name and a language, and we invoke the greet multimethod with the person as an argument. The appropriate method is automatically dispatched based on the language specified in the person map.
+
+Multimethods in Clojure offer several benefits, including:
+
+1. Polymorphism: Multimethods provide a powerful mechanism for achieving polymorphic behavior. They allow you to define different behaviors for the same function or operation based on the type or characteristics of the arguments. This enables you to write expressive and flexible code that can adapt its behavior dynamically.
+2. Extensibility: Multimethods facilitate easy extensibility. You can define new methods for a multimethod without modifying its existing code. This promotes a separation of concerns and makes it straightforward to add new behaviors or handle new types of inputs without affecting existing code. This extensibility also lends itself well to creating reusable libraries and components.
+3. Dispatch based on arbitrary criteria: Multimethods allow you to dispatch methods based on any arbitrary criteria, not just the type of arguments. You can use any value or combination of values as the dispatch value, such as keywords, symbols, maps, or custom data types. This flexibility enables you to define polymorphic behavior based on domain-specific criteria or attributes of the input.
+4. Code organization and clarity: By grouping related behaviors within a single multimethod, code organization and clarity are improved. Related methods for different cases or inputs are defined in one place, making it easier to understand the available behaviors and their relationships. This promotes modular and maintainable code by providing a clear and centralized way to handle different cases.
+5. Code reuse: Multimethods promote code reuse by allowing methods to be shared across different multimethods. You can define methods that can be reused in multiple multimethods, thereby reducing code duplication and increasing code reuse. This leads to cleaner and more modular code.

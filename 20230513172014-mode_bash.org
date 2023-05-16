@@ -5,9 +5,9 @@
 #+author: Deden Bangkit
 
 #+PROPERTY: header-args:sh    :exports both
-#+PROPERTY: header-args:sh+   :results raw
+#+PROPERTY: header-args:sh+   :results drawer
 
-* JQ
+* Jq
 
 jq is a lightweight and flexible command-line tool for parsing, manipulating, and querying JSON data. It is designed specifically for working with JSON, making it easy to extract specific values, filter data based on conditions, transform data structures, and perform complex operations on JSON documents.
 
@@ -20,6 +20,7 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 #+end_src
 
 #+RESULTS: Map and Limit Value
+:results:
 [
   {
     "district_id": "3201",
@@ -30,10 +31,11 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
     "district_name": "KABUPATEN SUKABUMI"
   }
 ]
+:end:
 
 ** Transform Value
 #+name: Transform Value
-#+begin_src sh
+#+begin_src sh :results drawer
 echo "| Name | City |"
 echo "|-+-|"
 curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
@@ -41,6 +43,7 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 #+end_src
 
 #+RESULTS: Transform Value
+:results:
 | Name | City                    |
 |------+-------------------------|
 | 3201 | KABUPATEN BOGOR         |
@@ -70,6 +73,7 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 | 3277 | KOTA CIMAHI             |
 | 3278 | KOTA TASIKMALAYA        |
 | 3279 | KOTA BANJAR             |
+:end:
 
 ** List Specific Key Values
 
@@ -80,8 +84,10 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 #+end_src
 
 #+RESULTS: List Specific Key Value
+:results:
 KABUPATEN BOGOR
 KABUPATEN SUKABUMI
+:end:
 
 ** Filter by Value
 
@@ -92,13 +98,15 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 #+end_src
 
 #+RESULTS: Filter by Value
+:results:
 KOTA TASIKMALAYA
 KOTA BANJAR
+:end:
 
 
-* Pup
+* PUP
 
-pup is a command line tool for processing HTML. It reads from stdin, prints to stdout, and allows the user to filter parts of the page using CSS selectors.
+PUP is a command line tool for processing HTML. It reads from stdin, prints to stdout, and allows the user to filter parts of the page using CSS selectors.
 
 Read more: [[https://github.com/ericchiang/pup]]
 
@@ -112,12 +120,14 @@ curl -s https://news.ycombinator.com/ \
 #+end_src
 
 #+RESULTS: Filter by HTML Tag
+:results:
 <span class="sitestr">
  ableton.com
 </span>
 <span class="sitestr">
  arxiv.org
 </span>
+:end:
 
 ** HTML To JSON
 
@@ -129,6 +139,7 @@ curl -s https://news.ycombinator.com/ \
 #+end_src
 
 #+RESULTS: HTML To JSON
+:results:
 [
   {
     "class": "sitestr",
@@ -141,3 +152,4 @@ curl -s https://news.ycombinator.com/ \
     "text": "arxiv.org"
   }
 ]
+:end:

@@ -5,7 +5,7 @@
 #+author: Deden Bangkit
 
 #+PROPERTY: header-args:sh    :exports both
-#+PROPERTY: header-args:sh+   :results output
+#+PROPERTY: header-args:sh+   :results raw
 
 * JQ
 
@@ -20,7 +20,6 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 #+end_src
 
 #+RESULTS: Map and Limit Value
-#+begin_example
 [
   {
     "district_id": "3201",
@@ -31,11 +30,10 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
     "district_name": "KABUPATEN SUKABUMI"
   }
 ]
-#+end_example
 
 ** Transform Value
 #+name: Transform Value
-#+begin_src sh :results raw
+#+begin_src sh
 echo "| Name | City |"
 echo "|-+-|"
 curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
@@ -82,8 +80,8 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 #+end_src
 
 #+RESULTS: List Specific Key Value
-: KABUPATEN BOGOR
-: KABUPATEN SUKABUMI
+KABUPATEN BOGOR
+KABUPATEN SUKABUMI
 
 ** Filter by Value
 
@@ -94,8 +92,8 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 #+end_src
 
 #+RESULTS: Filter by Value
-: KOTA TASIKMALAYA
-: KOTA BANJAR
+KOTA TASIKMALAYA
+KOTA BANJAR
 
 
 * Pup
@@ -114,13 +112,12 @@ curl -s https://news.ycombinator.com/ \
 #+end_src
 
 #+RESULTS: Filter by HTML Tag
-: <span class="sitestr">
-:  ableton.com
-: </span>
-: <span class="sitestr">
-:  arxiv.org
-: </span>
-
+<span class="sitestr">
+ ableton.com
+</span>
+<span class="sitestr">
+ arxiv.org
+</span>
 
 ** HTML To JSON
 
@@ -132,7 +129,6 @@ curl -s https://news.ycombinator.com/ \
 #+end_src
 
 #+RESULTS: HTML To JSON
-#+begin_example
 [
   {
     "class": "sitestr",
@@ -145,4 +141,3 @@ curl -s https://news.ycombinator.com/ \
     "text": "arxiv.org"
   }
 ]
-#+end_example

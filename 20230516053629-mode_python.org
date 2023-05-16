@@ -173,3 +173,45 @@ df_updated = df.applymap(transform_value)
 | 2 | MICHAEL |  36 | UK        | Nasi Goreng         |
 | 3 | JESSICA |  36 | USA       | Nasi Goreng,Rendang |
 | 4 | BRIAN   |  33 | AUSTRALIA | Nasi Goreng,Rendang |
+
+** Fill Missing Value
+
+#+name: Fill missing
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+df_missing = pd.DataFrame({
+    'Name': ['Deden', 'Joy' ,'Emily', 'Michael', 'Jessica', 'Brian'],
+    'Age': [34, None, 32, 31, None, 39],
+    'Country': ['Indonesia', 'India', 'USA', 'UK', 'USA', None],
+})
+
+# Interpolate
+df_filled = df_missing.fillna('N/A')
+<<pd2org("df_filled")>>
+#+end_src
+
+** Interpolate Missing Value
+
+#+name: Interpolate
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+df_missing = pd.DataFrame({
+    'Name': ['Deden', 'Joy' ,'Emily', 'Michael', 'Jessica', 'Brian'],
+    'Age': [34, None, 32, 31, None, 39],
+    'Country': ['Indonesia', 'India', 'USA', 'UK', 'USA', None],
+})
+
+# Interpolate
+df_interpolated = df_missing.interpolate()
+<<pd2org("df_interpolated")>>
+#+end_src
+
+#+RESULTS: Interpolate
+|   | Name    | Age | Country   |
+|---+---------+-----+-----------|
+| 0 | Deden   |  34 | Indonesia |
+| 1 | Joy     |  33 | India     |
+| 2 | Emily   |  32 | USA       |
+| 3 | Michael |  31 | UK        |
+| 4 | Jessica |  35 | USA       |
+| 5 | Brian   |  39 |           |

@@ -190,6 +190,16 @@ df_filled = df_missing.fillna('N/A')
 <<pd2org("df_filled")>>
 #+end_src
 
+#+RESULTS: Fill missing
+|   | Name    |  Age | Country   |
+|---+---------+------+-----------|
+| 0 | Deden   | 34.0 | Indonesia |
+| 1 | Joy     |  N/A | India     |
+| 2 | Emily   | 32.0 | USA       |
+| 3 | Michael | 31.0 | UK        |
+| 4 | Jessica |  N/A | USA       |
+| 5 | Brian   | 39.0 | N/A       |
+
 ** Interpolate Missing Value
 
 #+name: Interpolate
@@ -215,3 +225,20 @@ df_interpolated = df_missing.interpolate()
 | 3 | Michael |  31 | UK        |
 | 4 | Jessica |  35 | USA       |
 | 5 | Brian   |  39 |           |
+
+
+** Group-wise Transform
+
+#+name: Interpolate
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+
+df = pd.DataFrame({
+    'Name': ['Deden', 'Emily', 'Michael', 'Jessica', 'Brian'],
+    'Age': [34, 30, 35, 35, 32],
+    'Country': ['Indonesia', 'USA', 'UK', 'USA', 'Australia'],
+})
+
+
+
+#+end_src

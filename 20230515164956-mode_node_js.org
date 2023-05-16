@@ -1,0 +1,97 @@
+:PROPERTIES:
+:ID:       2e20b8f9-50c1-490b-9ad9-5075219fd786
+:END:
+#+title: Mode Node-JS
+
+#+PROPERTY: header-args:js   :cache yes
+#+PROPERTY: header-args:js+  :exports both
+#+PROPERTY: header-args:js+  :results output replace
+#+PROPERTY: header-args:js+  :tangle data-node.js
+
+* Examples
+
+** Shorthand Notation
+
+#+name: Shorthand notation
+#+begin_src js
+const name = 'John';
+const age = 30;
+const user = { name, age }
+const otherUser = { name, maxAge: age}
+console.log("User", user)
+console.log("otherUser", otherUser)
+#+end_src
+
+#+RESULTS[9075fa9f9364a10830b9cad939f793d051fb0406]: Shorthand notation
+: User { name: 'John', age: 30 }
+: otherUser { name: 'John', maxAge: 30 }
+
+** Map and Set Data Structures
+
+#+name: Map and set data structures
+#+begin_src js
+// Map example
+const user1 = { name: 'John' };
+const user2 = { name: 'Jane' };
+
+const userMap = new Map();
+userMap.set(user1, 'User 1');
+userMap.set(user2, 'User 2');
+
+console.log(userMap.get(user1));
+
+// Set example
+const uniqueNumbers = new Set([1, 2, 3, 3, 4, 5, 5]);
+console.log(uniqueNumbers);
+#+end_src
+
+#+RESULTS[46efd5dcc425f12050b4bc2037b22d36582d5188]: Map and set data structures
+: User 1
+: Set(5) { 1, 2, 3, 4, 5 }
+
+** Async and Await
+
+#+name: Async and await
+#+begin_src js
+// Simulating an asynchronous API request
+function fetchData() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const data = 'Fetched data';
+      resolve(data);
+      // or
+      // reject(new Error('Error occurred'));
+    }, 2000);
+  });
+}
+// Async function using await to handle asynchronous code
+async function processData() {
+  try {
+    const data = await fetchData();
+    console.log('Data:', data);
+    // Perform further operations with the data
+    const processedData = data.toUpperCase();
+    console.log('Processed Data:', processedData);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+// Calling the async function
+processData();
+#+end_src
+
+#+RESULTS[97dda0e060aa1b79ae041c2a437adc8bde4c74d0]: Async and await
+: Data: Fetched data
+: Processed Data: FETCHED DATA
+
+** Object destructuring with default values
+
+#+name: Object destructuring with default values
+#+begin_src js
+const user = { age: 30 }
+const { name = "Guest", age } = user
+console.log(name, age)
+#+end_src
+
+#+RESULTS[3431a3515841bced47f83e953a40cdae7313c2f8]: Object destructuring with default values
+: Guest 30

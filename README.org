@@ -1,0 +1,16 @@
+Welcome to *org-code-crafters*, a repository dedicated to providing a curated collection of programming tips, tricks, and code block examples for various programming languages. Organized using org-mode, this repository is designed to help programmers at all levels enhance their coding skills and gain practical insights.
+
+org-code-crafters offers a comprehensive selection of examples in popular programming languages such as Python, JavaScript, Java, Clojure, and more. Each code block example is carefully crafted to showcase best practices, efficient algorithms, and effective problem-solving techniques.
+
+#+name: Language Support
+#+begin_src sh :exports both :results replace raw
+ls . | grep 'mode' | cut -d '-' -f 2 | sed 's/mode_\(.*\)\.org/- \1/'
+#+end_src
+
+#+RESULTS: Language Support
+- bash
+- sql
+- node_js
+- python
+
+Join org-code-crafters to explore a diverse collection of code block examples, learn valuable programming tips and tricks, and advance your coding skills across multiple languages. Contribute your expertise, share insights, and be part of a vibrant community dedicated to continuous learning and improvement with org-code-crafters!

@@ -1,0 +1,149 @@
+:PROPERTIES:
+:ID:       b8f8b212-3059-450d-8c02-7cd73e669c57
+:END:
+#+title: Mode SQL
+
+#+PROPERTY: header-args:sql     :cache yes
+#+PROPERTY: header-args:sql+    :exports both
+#+PROPERTY: header-args:sql+    :engine postgresql
+#+PROPERTY: header-args:sql+    :dbhost localhost
+#+PROPERTY: header-args:sql+    :dbuser akvo
+#+PROPERTY: header-args:sql+    :dbpassword password
+#+PROPERTY: header-args:sql+    :database demo
+#+PROPERTY: header-args :tangle data-model.sql
+#+STARTUP: showall
+
+
+* List of Database
+
+#+name:Database
+#+begin_src sql
+\d
+#+end_src
+
+#+RESULTS[d85f4a8ca1d7aee8bb2404283be56125c42fccad]: Akvo Response Grouper Demo
+| List of relations |                       |                   |       |
+|-------------------+-----------------------+-------------------+-------|
+| Schema            | Name                  | Type              | Owner |
+| public            | alembic_version       | table             | akvo  |
+| public            | answer                | table             | akvo  |
+| public            | answer_id_seq         | sequence          | akvo  |
+| public            | ar_category           | materialized view | akvo  |
+| public            | data                  | table             | akvo  |
+| public            | data_id_seq           | sequence          | akvo  |
+| public            | form                  | table             | akvo  |
+| public            | form_id_seq           | sequence          | akvo  |
+| public            | option                | table             | akvo  |
+| public            | option_id_seq         | sequence          | akvo  |
+| public            | question              | table             | akvo  |
+| public            | question_group        | table             | akvo  |
+| public            | question_group_id_seq | sequence          | akvo  |
+| public            | question_id_seq       | sequence          | akvo  |
+
+* Example Query
+
+** Form
+
+#+name:Form
+#+begin_src sql
+  SELECT column_name, data_type
+  FROM   information_schema.columns
+  WHERE  table_name = 'form'
+  ORDER  BY ordinal_position;
+#+end_src
+
+#+RESULTS[6a4fb5e2a3c9543a1f6269155520c8d40b97c25b]: Form
+| column_name | data_type         |
+|-------------+-------------------|
+| id          | integer           |
+| name        | character varying |
+
+** Question Group
+
+#+name:Question Group
+#+begin_src sql
+  SELECT column_name, data_type
+  FROM   information_schema.columns
+  WHERE  table_name = 'question_group'
+  ORDER  BY ordinal_position;
+#+end_src
+
+#+RESULTS[4d00f5730ebad36a2449be969a843bffb04ca8b6]: Question Group
+| column_name | data_type         |
+|-------------+-------------------|
+| id          | integer           |
+| order       | integer           |
+| name        | character varying |
+| form        | integer           |
+
+** Question
+
+#+name:Question
+#+begin_src sql
+  SELECT column_name, data_type
+  FROM   information_schema.columns
+  WHERE  table_name = 'question'
+  ORDER  BY ordinal_position;
+#+end_src
+
+#+RESULTS[bdf6a07051c483b6033c23bcef6251331fbd1084]: Question
+| column_name    | data_type         |
+|----------------+-------------------|
+| id             | integer           |
+| order          | integer           |
+| name           | character varying |
+| form           | integer           |
+| type           | USER-DEFINED      |
+| question_group | integer           |
+| dependency     | ARRAY             |
+
+** Data
+
+#+name:Data
+#+begin_src sql
+  SELECT column_name, data_type
+  FROM   information_schema.columns
+  WHERE  table_name = 'data'
+  ORDER  BY ordinal_position;
+#+end_src
+
+#+RESULTS[9c804ff1ef05a9c4f16d719690be669f7e4ccd50]: Data
+| column_name | data_type                   |
+|-------------+-----------------------------|
+| id          | integer                     |
+| form        | integer                     |
+| created     | timestamp without time zone |
+
+** Answer
+
+#+name:Answer
+#+begin_src sql
+  SELECT column_name, data_type
+  FROM   information_schema.columns
+  WHERE  table_name = 'answer'
+  ORDER  BY ordinal_position;
+#+end_src
+
+#+RESULTS[6a66429366c6995c02afbd9d38890ea7c11c0f15]: Answer
+| column_name | data_type        |
+|-------------+------------------|
+| id          | integer          |
+| question    | integer          |
+| data        | integer          |
+| value       | double precision |
+| text        | text             |
+| options     | ARRAY            |
+
+* List of Materialized Views
+
+#+name Materialized Views
+#+begin_src sql
+select relname, relkind
+from pg_class
+where relkind = 'm';
+#+end_src
+
+#+RESULTS[c8d46699b15eb6d28b82ee09a9dbc02d1970294a]:
+| relname     | relkind |
+|-------------+---------|
+| ar_category | m       |

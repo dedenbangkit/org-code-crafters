@@ -1,0 +1,175 @@
+:PROPERTIES:
+:ID:       524cc71d-96cf-4d3e-a0be-23865dc79145
+:END:
+#+title: Mode Python
+
+#+PROPERTY: header-args:python+  :exports both
+#+PROPERTY: header-args:python+  :tangle example.py
+#+PROPERTY: header-args:python+  :prologue "from tabulate import tabulate\nimport pandas as pd"
+#+PROPERTY: header-args:python+  :results replace
+
+
+* Predefined Function
+
+** Create Predefined Function
+
+#+name: strip_function
+#+begin_src python :var input_text="input_text" prefix="prefix" :results none
+return f"""
+def the_strip_function(input_text:str, prefix:str):
+    return prefix + " " + "*" + input_text.strip() + "*"
+return the_strip_function({input_text}, {prefix})
+"""
+#+end_src
+
+** Get the Result of Predefined Function
+
+#+name: Example use of strip_function
+#+header: :noweb strip-export
+#+begin_src python :results replace raw
+example_input_text = "Lorem Ipsum"
+example_prefix = "-"
+<<strip_function("example_input_text", "example_prefix")>>
+#+end_src
+
+#+RESULTS: Example use of strip_function
+- *Lorem Ipsum*
+
+
+* Pandas
+
+** Concat DataFrame
+
+#+name: Add new columns
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+data = {
+    'Name': ['Deden', 'Emily', 'Michael', 'Jessica', 'Brian'],
+    'Age': [34, 30, 35, 35, 32],
+    'Country': ['Indonesia', 'USA', 'UK', 'USA', 'Australia']
+}
+df = pd.DataFrame(data)
+salary = {'Salary': [5000, 6000, 7000, 5500, 6500]}
+df_additional = pd.DataFrame(salary)
+df_combined = pd.concat([df, df_additional], axis=1)
+<<pd2org("df_combined")>>
+#+end_src
+
+#+RESULTS: Add new columns
+|   | Name    | Age | Country   | Salary |
+|---+---------+-----+-----------+--------|
+| 0 | Deden   |  34 | Indonesia |   5000 |
+| 1 | Emily   |  30 | USA       |   6000 |
+| 2 | Michael |  35 | UK        |   7000 |
+| 3 | Jessica |  35 | USA       |   5500 |
+| 4 | Brian   |  32 | Australia |   6500 |
+
+** Merge DataFrame
+
+#+name: Add new columns
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+data = {
+    'Name': ['Deden', 'Emily', 'Michael', 'Jessica', 'Brian'],
+    'Age': [34, 30, 35, 35, 32],
+    'Country': ['Indonesia', 'USA', 'UK', 'USA', 'Australia']
+}
+df = pd.DataFrame(data)
+salary = {'Salary': [5000, 6000, 7000, 5500, 6500]}
+df_additional = pd.DataFrame(salary)
+df_combined = pd.concat([df, df_additional], axis=1)
+<<pd2org("df_combined")>>
+#+end_src
+
+** Print Dataframe to ORG Table
+
+#+name: pd2org
+#+begin_src python :var df="df" :results none
+return f"return tabulate({df}, headers={df}.columns, tablefmt='orgtbl')"
+#+end_src
+
+#+name: Example pd2org
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+data = pd.DataFrame([{"name": "Deden", "age": 34}, {"name": "Shinta", "age": 33}])
+<<pd2org("data")>>
+#+end_src
+
+#+RESULTS: Example pd2org
+|   | name   | age |
+|---+--------+-----|
+| 0 | Deden  |  34 |
+| 1 | Shinta |  33 |
+
+** Grouping, Aggregating, and Sorting
+
+#+name: Grouping, Aggregating and Sorting
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+data = {
+    'Name': ['Deden', 'Emily', 'Michael', 'Jessica', 'Brian'],
+    'Age': [34, 30, 35, 35, 32],
+    'Country': ['Indonesia', 'USA', 'UK', 'USA', 'Australia']
+}
+df = pd.DataFrame(data)
+
+df_grouped = df.groupby('Country').agg({'Age': 'mean', 'Name': 'count'}).reset_index()
+df_sorted = df_grouped.sort_values(
+    by=['Age'], ascending=False
+).rename(columns={"Name": "Persons"}).reset_index(drop=True)
+,#+begin_quote
+,#+end_quote
+<<pd2org("df_sorted")>>
+#+end_src
+
+#+RESULTS: Grouping, Aggregating and Sorting
+|   | Country   |  Age | Persons |
+|---+-----------+------+---------|
+| 0 | UK        |   35 |       1 |
+| 1 | Indonesia |   34 |       1 |
+| 2 | USA       | 32.5 |       2 |
+| 3 | Australia |   32 |       1 |
+
+** Applymap
+
+#+name: Applymap
+#+header: :noweb strip-export
+#+begin_src python :results value raw
+data = {
+    'Name': ['Deden', 'Emily', 'Michael', 'Jessica', 'Brian'],
+    'Age': [34, 30, 35, 35, 32],
+    'Country': ['Indonesia', 'USA', 'UK', 'USA', 'Australia'],
+    'Favourite Food': [
+        ['Rendang', 'Nasi Goreng'],
+        ['Rendang'],
+        ['Nasi Goreng','Nasi Goreng'],
+        ['Rendang', 'Nasi Goreng'],
+        ['Rendang', 'Nasi Goreng']
+    ]
+}
+df = pd.DataFrame(data)
+
+def transform_value(x):
+    print(type(x))
+    if isinstance(x, str):
+        return x.upper()
+    elif isinstance(x, int):
+        return x + 1
+    elif isinstance(x, list):
+        # Sort, remove duplicate
+        return ",".join(sorted(set(x)))
+    else:
+        return x
+
+df_updated = df.applymap(transform_value)
+<<pd2org("df_updated")>>
+#+end_src
+
+#+RESULTS: Applymap
+|   | Name    | Age | Country   | Favourite Food      |
+|---+---------+-----+-----------+---------------------|
+| 0 | DEDEN   |  35 | INDONESIA | Nasi Goreng,Rendang |
+| 1 | EMILY   |  31 | USA       | Rendang             |
+| 2 | MICHAEL |  36 | UK        | Nasi Goreng         |
+| 3 | JESSICA |  36 | USA       | Nasi Goreng,Rendang |
+| 4 | BRIAN   |  33 | AUSTRALIA | Nasi Goreng,Rendang |

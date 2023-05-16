@@ -6,6 +6,7 @@
 
 #+PROPERTY: header-args:sh    :exports both
 #+PROPERTY: header-args:sh+   :results drawer
+#+PROPERTY: header-args:sh+   :noweb strip-export
 
 * Jq
 

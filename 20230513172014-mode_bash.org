@@ -74,30 +74,26 @@ curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
 ** List Specific Key Values
 
 #+name: List Specific Key Value
-#+begin_src sh :results drawer
+#+begin_src sh
 curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
     | jq -r '.[:2] | .[].name'
 #+end_src
 
 #+RESULTS: List Specific Key Value
-:results:
 KABUPATEN BOGOR
 KABUPATEN SUKABUMI
-:end:
 
 ** Filter by Value
 
 #+name: Filter by Value
-#+begin_src sh :results drawer
+#+begin_src sh
 curl -s https://www.emsifa.com/api-wilayah-indonesia/api/regencies/32.json \
     | jq -r 'map(select(.id > "3277")) | .[].name'
 #+end_src
 
 #+RESULTS: Filter by Value
-:results:
 KOTA TASIKMALAYA
 KOTA BANJAR
-:end:
 
 
 * Pup
@@ -109,43 +105,39 @@ Read more: [[https://github.com/ericchiang/pup]]
 ** Filter By HTML Tag and ClassName
 
 #+name: Filter by HTML Tag
-#+begin_src sh :results drawer
+#+begin_src sh
 curl -s https://news.ycombinator.com/ \
     | pup 'span.titleline .sitestr' \
     | head -n 6
 #+end_src
 
 #+RESULTS: Filter by HTML Tag
-:results:
-<span class="sitestr">
- bloomberg.com
-</span>
 <span class="sitestr">
  ableton.com
 </span>
-:end:
+<span class="sitestr">
+ arxiv.org
+</span>
 
 ** HTML To JSON
 
 #+name: HTML To JSON
-#+begin_src sh :results drawer
+#+begin_src sh
 curl -s https://news.ycombinator.com/ \
     | pup 'span.titleline .sitestr json{}' \
     | jq -r ".[:2]"
 #+end_src
 
 #+RESULTS: HTML To JSON
-:results:
 [
   {
     "class": "sitestr",
     "tag": "span",
-    "text": "bloomberg.com"
+    "text": "ableton.com"
   },
   {
     "class": "sitestr",
     "tag": "span",
-    "text": "ableton.com"
+    "text": "arxiv.org"
   }
 ]
-:end:
